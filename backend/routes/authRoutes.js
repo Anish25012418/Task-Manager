@@ -1,6 +1,6 @@
 import express from 'express';
 import {
-  deleteUserProfile,
+  // deleteUserProfile,
   getUserProfile,
   loginUser,
   registerUser,
@@ -17,7 +17,7 @@ router.post("/register", registerUser);
 router.post("/login", loginUser);
 router.get("/profile", protect, getUserProfile);
 router.put("/profile", protect, updateUserProfile);
-router.delete("/profile", protect, deleteUserProfile);
+// router.delete("/profile", protect, deleteUserProfile);
 
 router.post("/upload-image", upload.single("image"), uploadUserProfileImage);
 
