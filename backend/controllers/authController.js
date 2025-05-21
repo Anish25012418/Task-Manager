@@ -130,17 +130,17 @@ const updateUserProfile = async (req, res) => {
 // @desc Delete user profile
 // @route method=DELETE url=/api/auth/profile
 // @access Private (Requires JWT)
-const deleteUserProfile = async (req, res) => {
-  try {
-    if (!req.user) {
-      return res.status(401).json({error: "User not found"})
-    }
-    await User.findByIdAndDelete(req.user._id);
-    res.status(200).json({message: "User deleted successfully."});
-  } catch (error) {
-    res.status(500).json({message: "Server error", error: error.message});
-  }
-}
+// const deleteUserProfile = async (req, res) => {
+//   try {
+//     if (!req.user) {
+//       return res.status(401).json({error: "User not found"})
+//     }
+//     await User.findByIdAndDelete(req.user._id);
+//     res.status(200).json({message: "User deleted successfully."});
+//   } catch (error) {
+//     res.status(500).json({message: "Server error", error: error.message});
+//   }
+// }
 
 const uploadUserProfileImage = async (req, res) => {
   try {
@@ -155,4 +155,4 @@ const uploadUserProfileImage = async (req, res) => {
   }
 }
 
-export {registerUser, loginUser, getUserProfile, updateUserProfile, deleteUserProfile, uploadUserProfileImage}
+export {registerUser, loginUser, getUserProfile, updateUserProfile, uploadUserProfileImage}
