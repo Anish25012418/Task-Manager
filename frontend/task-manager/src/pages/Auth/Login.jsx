@@ -12,7 +12,7 @@ const Login = () => {
 
   const handleChange = (e) => {
     const {name, value} = e.target;
-    setLoginCredentials({...loginCredentials, [name]: value});
+    setLoginCredentials((prevState) => ({...prevState, [name]: value}));
   }
 
   const handleLogin = async () => {

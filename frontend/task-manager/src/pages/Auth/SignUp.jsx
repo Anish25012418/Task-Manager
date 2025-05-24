@@ -38,7 +38,7 @@ const SignUp = () => {
 
   const handleChange = (e) => {
     const {name, value} = e.target;
-    setProfile({...profile, [name]: value});
+    setProfile((prevState) => ({...profile, [name]: value}));
   }
 
   return (
