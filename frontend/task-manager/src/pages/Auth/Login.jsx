@@ -10,33 +10,35 @@ const Login = () => {
 
   // const navigate = useNavigate();
 
-  const handleLogin = async (formData) => {
-    const email = formData.get("email");
-    const password = formData.get("password");
-    if (!validateEmail(email)){
+  const handleChange = (e) => {
+    const {name, value} = e.target;
+    setLoginCredentials({...loginCredentials, [name]: value});
+  }
+
+  const handleLogin = async () => {
+    if (!validateEmail(loginCredentials.email)){
       setError("Please enter a valid email address");
       return;
     }
-    if(!password){
+    if(!loginCredentials.password){
       setError("Please enter your password");
       return;
     }
-    setLoginCredentials({email, password});
 
     setError("");
   }
   return (
     <div>
       <AuthLayout>
-        <div className="lg:w-[70%] h-3/4 md:h-full flex flex-col justify-center">
+        <div className="lg:w-[100%] h-3/4 md:h-full flex flex-col justify-center">
           <h3 className="text-xl font-semibold text-black">Welcome Back</h3>
           <p className="text-xs text-slate-700 mt-[5px] mb-6">Please enter your details to login</p>
 
 
           <form action={handleLogin}>
-            <Input name="email" label="Email Address" placeholder="johndoe@example.com"
+            <Input name="email" value={loginCredentials.email} onChange={handleChange}  label="Email Address" placeholder="johndoe@example.com"
                    type="text"/>
-            <Input name="password" label="Password" placeholder="Min 8 characters"
+            <Input name="password" value={loginCredentials.password} onChange={handleChange} label="Password" placeholder="Min 8 characters"
                    type="password"/>
 
             {error && <p className="text-red-500 text-xs pb-2.5">{error}</p>}
