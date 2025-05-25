@@ -1,6 +1,5 @@
 import excelJS from "exceljs";
 import Task from "../models/Task.js";
-import Exceljs from "exceljs/index.js";
 import User from "../models/User.js";
 import task from "../models/Task.js";
 
