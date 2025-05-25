@@ -30,6 +30,12 @@ const SignUp = () => {
     }
 
     setError("");
+
+    try {
+
+    }catch(error) {
+
+    }
   }
 
   const handleProfilePicSet = (file) => {
@@ -38,7 +44,7 @@ const SignUp = () => {
 
   const handleChange = (e) => {
     const {name, value} = e.target;
-    setProfile((prevState) => ({...profile, [name]: value}));
+    setProfile((prevState) => ({...prevState, [name]: value}));
   }
 
   return (

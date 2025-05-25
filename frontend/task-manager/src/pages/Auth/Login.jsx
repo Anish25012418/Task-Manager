@@ -1,14 +1,19 @@
-import React from 'react';
+import React, {useState, useContext} from 'react';
 import AuthLayout from "../../components/layouts/AuthLayout.jsx";
 import {Link, useNavigate} from "react-router-dom";
 import Input from "../../components/inputs/Input.jsx";
 import {validateEmail} from "../../utils/helper.js";
+import axiosInstance from "../../utils/axiosInstance.js";
+import {API_PATHS} from "../../utils/apiPaths.js";
+import {UserContext} from "../../context/userContext.jsx";
 
 const Login = () => {
-  const [loginCredentials, setLoginCredentials] = React.useState({email: '', password: ''});
+  const [loginCredentials, setLoginCredentials] = useState({email: '', password: ''});
   const [error, setError] = React.useState(null);
 
-  // const navigate = useNavigate();
+  const {updateUser} = useContext(UserContext);
+
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const {name, value} = e.target;
@@ -26,6 +31,29 @@ const Login = () => {
     }
 
     setError("");
+
+    //Login API Call
+    try {
+      const response = await axiosInstance.post(API_PATHS.AUTH.LOGIN, loginCredentials);
+      const {token, role} = response.data;
+
+      if(token){
+        localStorage.setItem("accessToken", token);
+        updateUser(response.data);
+
+        if (role === "admin"){
+          navigate("/admin/dashboard");
+        } else {
+          navigate("/user/dashboard");
+        }
+      }
+    }catch (error) {
+      if (error.response && error.response.data.message) {
+        setError(error.response.data.message);
+      }else {
+        setError("Something went wrong. Please try again later.");
+      }
+    }
   }
   return (
     <div>
