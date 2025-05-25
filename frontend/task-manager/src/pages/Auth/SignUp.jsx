@@ -1,22 +1,31 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import AuthLayout from "../../components/layouts/AuthLayout.jsx";
 import {validateEmail} from "../../utils/helper.js";
 import ProfilePhotoSelector from "../../components/inputs/ProfilePhotoSelector.jsx";
 import Input from "../../components/inputs/Input.jsx";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
+import {API_PATHS} from "../../utils/apiPaths.js";
+import {authHandler} from "../../utils/authHandler.js";
+import {UserContext} from "../../context/userContext.jsx";
+import uploadImage from "../../utils/uploadImage.js";
 
 const SignUp = () => {
   const [profile, setProfile] = useState({
-    profilePic: null,
-    fullName: "",
+    profileImageUrl: "",
+    name: "",
     email: "",
     password: "",
     adminInviteToken: "",
   })
-  const [error, setError] = useState(null);
+  const [profileImage, setProfileImage] = useState(null)
+  const [error, setError] = React.useState(null);
+
+  const {updateUser} = useContext(UserContext);
+
+  const navigate = useNavigate();
 
   const handleSignUp = async () => {
-    if (!profile.fullName) {
+    if (!profile.name) {
       setError("Please enter full name.");
       return;
     }
@@ -31,15 +40,23 @@ const SignUp = () => {
 
     setError("");
 
-    try {
-
-    }catch(error) {
-
+    if (profileImage){
+      try {
+        const imageUploadRes = await uploadImage(profileImage);
+        console.log(imageUploadRes);
+        setProfile((prevState) => ({...prevState, profileImageUrl: imageUploadRes.imageUrl || ""}));
+      } catch (error) {
+        setError(error);
+      }
     }
-  }
 
-  const handleProfilePicSet = (file) => {
-    setProfile((prevState) => ({...prevState, profilePic: file}))
+    await authHandler({
+      path: API_PATHS.AUTH.REGISTER,
+      credentials: profile,
+      updateUser,
+      navigate,
+      setError
+    });
   }
 
   const handleChange = (e) => {
@@ -56,9 +73,9 @@ const SignUp = () => {
         </p>
 
         <form action={handleSignUp}>
-          <ProfilePhotoSelector image={profile.profilePic} setImage={handleProfilePicSet}/>
+          <ProfilePhotoSelector image={profileImage} setImage={setProfileImage}/>
           <div className="grid grid-cols-1 md-grid-cols-2 gap-0">
-            <Input name="fullName" value={profile.fullName} onChange={handleChange} placeholder="John Doe" type="text"
+            <Input name="name" value={profile.name} onChange={handleChange} placeholder="John Doe" type="text"
                    label="Full Name"/>
             <Input name="email" value={profile.email} onChange={handleChange} label="Email Address"
                    placeholder="johndoe@example.com"
