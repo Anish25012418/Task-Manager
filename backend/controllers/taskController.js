@@ -82,7 +82,7 @@ const createTask = async (req, res) => {
     }
 
     const task = await Task.create({
-      title, description, priority, dueDate, assignedTo, attachments, todoChecklist, createdBy: res.user._id
+      title, description, priority, dueDate, assignedTo, attachments, todoChecklist, createdBy: req.user._id
     });
 
     res.status(201).json({message: "Task created successfully.", task});
@@ -241,6 +241,7 @@ const getDashboardData = async (req, res) => {
     ])
     const taskPriorityLevels = taskPriorities.reduce((acc, priority) => {
       acc[priority] = taskPriorityLevelsRaw.find((item) => item._id === priority)?.count || 0;
+      return acc
     }, {})
 
     //Fetching recent 10 tasks
@@ -270,19 +271,19 @@ const getDashboardData = async (req, res) => {
 // @access Private
 const getUserDashboardData = async (req, res) => {
   try {
-    const usedId = req.user._id;
+    const userId = req.user._id;
 
     //Fetching stats for user-specific tasks
     const totalTasks = await Task.countDocuments({ assignedTo: userId });
     const pendingTasks = await Task.countDocuments({ assignedTo: userId, status: "Pending"});
-    const completedTasks = await Task.countDocuments({ assignedTo: usedId, status: "Completed"});
-    const overdueTasks = await Task.countDocuments({ assignedTo: usedId, status: {$ne: "Completed"}, dueDate: {$lt: new Date()}});
+    const completedTasks = await Task.countDocuments({ assignedTo: userId, status: "Completed"});
+    const overdueTasks = await Task.countDocuments({ assignedTo: userId, status: {$ne: "Completed"}, dueDate: {$lt: new Date()}});
 
     //Task Distribution by status
     const taskStatuses = ["Completed", "In Progress", "Pending"];
 
     const taskDistributionRaw = await Task.aggregate([
-      {$match: { assignedTo: usedId}},
+      {$match: { assignedTo: userId}},
       {$group: {_id: "$status", count: {$sum: 1}}}
     ]);
 
@@ -296,7 +297,7 @@ const getUserDashboardData = async (req, res) => {
     //Task distribution by priority
     const taskPriorities = ["Low", "Medium", "High"];
     const taskPriorityLevelsRaw = await Task.aggregate([
-      {$match: { assignedTo: usedId}},
+      {$match: { assignedTo: userId}},
       {$group: {_id: "$priority", count: {$sum: 1}}}
     ])
     const taskPriorityLevels = taskPriorities.reduce((acc, priority) => {
@@ -304,7 +305,7 @@ const getUserDashboardData = async (req, res) => {
     }, {})
 
     //Fetching recent 10 tasks
-    const recentTasks = await Task.find({ assignedTo: usedId}).sort({createdAt: -1}).limit(10).select("title status priority dueDate createdAt");
+    const recentTasks = await Task.find({ assignedTo: userId}).sort({createdAt: -1}).limit(10).select("title status priority dueDate createdAt");
     res.status(200).json({
       statistics: {
         totalTasks,

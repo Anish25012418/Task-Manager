@@ -12,9 +12,9 @@ import {
 const router = express.Router();
 
 router.get("/", protect, getTasks);
-router.get("/:id", protect, getTaskById);
 router.get("/dashboard-data", protect, getDashboardData);
 router.get("/user-dashboard-data", protect, getUserDashboardData);
+router.get("/:id", protect, getTaskById);
 router.post("/", protect, adminOnly, createTask);
 router.put("/:id", protect, updateTask);
 router.delete("/:id", protect, adminOnly, deleteTask);
