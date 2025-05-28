@@ -27,7 +27,7 @@ const getTasks = async (req, res) => {
         const completedCount = task.todoChecklist.filter(
           (item) => item.completed
         ).length;
-        return {...task, completedCount: completedCount};
+        return {...task._doc, completedCount: completedCount};
       })
     );
 

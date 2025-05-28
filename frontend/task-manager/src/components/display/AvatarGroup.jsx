@@ -2,7 +2,7 @@ import React from 'react';
 
 const AvatarGroup = ({avatars, maxVisible}) => {
   return (
-    <div>
+    <div className="flex items-center">
       {avatars.slice(0, maxVisible).map((avatar, index) => (
         <img key={index} src={avatar} alt={`Avatar ${index}`}
              className="w-9 h-9 rounded-full border-2 border-white -ml-3 first:ml-0"/>
