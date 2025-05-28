@@ -302,6 +302,7 @@ const getUserDashboardData = async (req, res) => {
     ])
     const taskPriorityLevels = taskPriorities.reduce((acc, priority) => {
       acc[priority] = taskPriorityLevelsRaw.find((item) => item._id === priority)?.count || 0;
+      return acc
     }, {})
 
     //Fetching recent 10 tasks

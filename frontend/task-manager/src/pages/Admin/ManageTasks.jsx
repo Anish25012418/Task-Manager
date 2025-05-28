@@ -6,6 +6,8 @@ import {API_PATHS} from "../../utils/apiPaths.js";
 import {LuFileSpreadsheet} from "react-icons/lu";
 import TaskStatusTabs from "../../components/display/TaskStatusTabs.jsx";
 import TaskCard from "../../components/cards/TaskCard.jsx";
+import toast from "react-hot-toast";
+import {downloadReportHandler} from "../../utils/downloadReportHandler.js";
 
 const ManageTasks = () => {
   const [allTasks, setAllTasks] = useState([]);
@@ -38,11 +40,15 @@ const ManageTasks = () => {
   }
 
   const handleClick = (taskData) => {
-    console.log(taskData);
     navigate(`/admin/create-task`, { state: { taskId: taskData._id } });
   }
 
   const handleDownloadReport = async () => {
+    await downloadReportHandler({
+      data_name: "tasks",
+      path: API_PATHS.REPORTS.EXPORT_TASKS,
+      report_name: "task_details.xlsx"
+    })
   }
 
   useEffect(() => {
