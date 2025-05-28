@@ -61,7 +61,7 @@ const DashboardView = () => {
   }
 
   const onSeeMore = () => {
-    navigate('/admin/tasks')
+    user?.role === "admin" ? navigate('/admin/tasks') : navigate('/user/tasks');
   }
 
   useEffect(() => {
@@ -88,7 +88,7 @@ const DashboardView = () => {
           <InfoCard label="In Progress Tasks"
                     value={addThousandsSeparator(data.dashboardData?.charts?.taskDistribution?.InProgress || 0)}
                     color="bg-cyan-500"/>
-          <InfoCard label="In Progress Tasks"
+          <InfoCard label="Completed Tasks"
                     value={addThousandsSeparator(data.dashboardData?.charts?.taskDistribution?.Completed || 0)}
                     color="bg-lime-500"/>
         </div>

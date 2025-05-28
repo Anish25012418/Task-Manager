@@ -11,6 +11,7 @@ import {Toaster} from "react-hot-toast";
 import ManageTasks from "./pages/Admin/ManageTasks.jsx";
 import ManageUsers from "./pages/Admin/ManageUsers.jsx";
 import MyTasks from "./pages/User/MyTasks.jsx";
+import ViewTaskDetails from "./pages/User/ViewTaskDetails.jsx";
 
 const App = () => {
   return (
@@ -35,6 +36,7 @@ const App = () => {
 
             //User Routes
             <Route path="/user/tasks" element={<MyTasks/>}/>
+            <Route path="/user/task-details/:id" element={<ViewTaskDetails/>}/>
           </Routes>
         </Router>
       </div>

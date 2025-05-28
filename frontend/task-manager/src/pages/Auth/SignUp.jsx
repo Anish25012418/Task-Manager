@@ -43,8 +43,7 @@ const SignUp = () => {
     if (profileImage){
       try {
         const imageUploadRes = await uploadImage(profileImage);
-        console.log(imageUploadRes);
-        setProfile((prevState) => ({...prevState, profileImageUrl: imageUploadRes.imageUrl || ""}));
+        profile.profileImageUrl = imageUploadRes.imageUrl || "";
       } catch (error) {
         setError(error);
       }

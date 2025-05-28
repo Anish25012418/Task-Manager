@@ -20,7 +20,8 @@ const Login = () => {
     setLoginCredentials((prevState) => ({...prevState, [name]: value}));
   }
 
-  const handleLogin = async () => {
+  const handleLogin = async (e) => {
+    e.preventDefault();
     if (!validateEmail(loginCredentials.email)) {
       setError("Please enter a valid email address");
       return;
@@ -48,7 +49,7 @@ const Login = () => {
           <p className="text-xs text-slate-700 mt-[5px] mb-6">Please enter your details to login</p>
 
 
-          <form action={handleLogin}>
+          <form onSubmit={handleLogin}>
             <Input name="email" value={loginCredentials.email} onChange={handleChange} label="Email Address"
                    placeholder="johndoe@example.com"
                    type="text"/>
