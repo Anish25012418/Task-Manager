@@ -1,13 +1,8 @@
-import React from 'react';
-import {useUserAuth} from "../../hooks/useUserAuth.jsx";
+import DashboardView from "../../components/layouts/DashboardView.jsx";
+
 
 const UserDashboard = () => {
-  useUserAuth();
-  return (
-    <div>
-
-    </div>
-  );
+  return <DashboardView />;
 };
 
 export default UserDashboard;

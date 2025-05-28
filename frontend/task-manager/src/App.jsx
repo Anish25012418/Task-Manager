@@ -8,6 +8,10 @@ import UserDashboard from "./pages/User/UserDashboard.jsx";
 import Dashboard from "./pages/Admin/Dashboard.jsx";
 import CreateTask from "./pages/Admin/CreateTask.jsx";
 import {Toaster} from "react-hot-toast";
+import ManageTasks from "./pages/Admin/ManageTasks.jsx";
+import ManageUsers from "./pages/Admin/ManageUsers.jsx";
+import MyTasks from "./pages/User/MyTasks.jsx";
+import ViewTaskDetails from "./pages/User/ViewTaskDetails.jsx";
 
 const App = () => {
   return (
@@ -25,6 +29,14 @@ const App = () => {
 
             //Tasks
             <Route path="/admin/create-task" element={<CreateTask/>}/>
+            <Route path="/admin/tasks" element={<ManageTasks/>}/>
+
+            //Users
+            <Route path="/admin/users" element={<ManageUsers/>}/>
+
+            //User Routes
+            <Route path="/user/tasks" element={<MyTasks/>}/>
+            <Route path="/user/task-details/:id" element={<ViewTaskDetails/>}/>
           </Routes>
         </Router>
       </div>

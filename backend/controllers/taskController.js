@@ -27,7 +27,7 @@ const getTasks = async (req, res) => {
         const completedCount = task.todoChecklist.filter(
           (item) => item.completed
         ).length;
-        return {...task._doc, completedCount: completedCount};
+        return {...task._doc, completedTodoCount: completedCount};
       })
     );
 
@@ -166,7 +166,7 @@ const updateTaskStatus = async (req, res) => {
 // @access Private
 const updateTaskChecklist = async (req, res) => {
   try {
-    const {todoCheckList} = req.body;
+    const {todoChecklist} = req.body;
     const task = await Task.findById(req.params.id)
 
     if (!task) return res.status(404).json({message: "Task not found"});
@@ -174,7 +174,7 @@ const updateTaskChecklist = async (req, res) => {
     if (!task.assignedTo.includes(req.user._id) && req.user.role !== "admin") {
       return res.status(403).json({message: "Not authorized to update checklist"});
     }
-    task.todoChecklist = todoCheckList;
+    task.todoChecklist = todoChecklist;
 
     //Auto-update progress based on checklist completion
     const completedCount = task.todoChecklist.filter(
@@ -302,6 +302,7 @@ const getUserDashboardData = async (req, res) => {
     ])
     const taskPriorityLevels = taskPriorities.reduce((acc, priority) => {
       acc[priority] = taskPriorityLevelsRaw.find((item) => item._id === priority)?.count || 0;
+      return acc
     }, {})
 
     //Fetching recent 10 tasks

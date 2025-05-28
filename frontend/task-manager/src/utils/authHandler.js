@@ -16,9 +16,10 @@ export async function authHandler({path, credentials, updateUser, navigate, setE
       }
     }
   } catch (error) {
-    if (error.response && error.response.data.message) {
-      setError(error.response.data.message);
-    } else {
+    localStorage.removeItem("accessToken");
+    if (error.response?.data?.error || error.response?.data?.message) {
+      setError(error.response.data.error || error.response.data.message);
+    }else {
       setError("Something went wrong. Please try again later.");
     }
   }

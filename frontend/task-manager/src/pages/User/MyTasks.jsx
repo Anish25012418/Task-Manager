@@ -9,7 +9,7 @@ import TaskCard from "../../components/cards/TaskCard.jsx";
 import toast from "react-hot-toast";
 import {downloadReportHandler} from "../../utils/downloadReportHandler.js";
 
-const ManageTasks = () => {
+const MyTasks = () => {
   const [allTasks, setAllTasks] = useState([]);
   const [tabs, setTabs] = useState([]);
   const [filterStatus, setFilterStatus] = useState("All");
@@ -39,17 +39,10 @@ const ManageTasks = () => {
     }
   }
 
-  const handleClick = (taskData) => {
-    navigate(`/admin/create-task`, { state: { taskId: taskData._id } });
+  const handleClick = (taskId) => {
+    navigate(`/user/task-details/${taskId}`);
   }
 
-  const handleDownloadReport = async () => {
-    await downloadReportHandler({
-      data_name: "tasks",
-      path: API_PATHS.REPORTS.EXPORT_TASKS,
-      report_name: "task_details.xlsx"
-    })
-  }
 
   useEffect(() => {
     getAllTasks(filterStatus);
@@ -57,29 +50,18 @@ const ManageTasks = () => {
   }, [filterStatus]);
 
   return (
-    <DashboardLayout activeMenu="Manage Tasks">
+    <DashboardLayout activeMenu="My Tasks">
       <div className="my-5">
         <div className="flex flex-col lg:flex-row lg:items-center justify-between">
-          <div className="flex items-center justify-between gap-3">
             <h2 className="text-xl md:text-xl font-medium">My Tasks</h2>
 
-            <button className="flex lg:hidden download-btn" onClick={handleDownloadReport}>
-              <LuFileSpreadsheet className="text-lg" /> Download Report
-            </button>
-          </div>
 
           {tabs?.[0]?.count > 0 &&(
-            <div className="flex items-center gap-3">
               <TaskStatusTabs
                 tabs={tabs}
                 activeTab={filterStatus}
                 setActiveTab={setFilterStatus}
               />
-
-              <button className="hidden lg:flex download-btn" onClick={handleDownloadReport}>
-                <LuFileSpreadsheet className="text-lg" /> Download Report
-              </button>
-            </div>
           )}
         </div>
 
@@ -98,7 +80,7 @@ const ManageTasks = () => {
               attachmentCount={item.attachments?.length || 0}
               completedTodoCount={item.completedTodoCount || 0}
               todoChecklist={item.todoChecklist || []}
-              onClick={() => handleClick(item)}
+              onClick={() => handleClick(item._id)}
             />
           ))}
         </div>
@@ -107,4 +89,4 @@ const ManageTasks = () => {
   );
 };
 
-export default ManageTasks;
+export default MyTasks;
