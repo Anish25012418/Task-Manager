@@ -6,6 +6,8 @@ import UserProvider from "./context/userContext.jsx";
 import Root from "./pages/Root.jsx";
 import UserDashboard from "./pages/User/UserDashboard.jsx";
 import Dashboard from "./pages/Admin/Dashboard.jsx";
+import CreateTask from "./pages/Admin/CreateTask.jsx";
+import {Toaster} from "react-hot-toast";
 
 const App = () => {
   return (
@@ -20,9 +22,20 @@ const App = () => {
             //Dashboard
             <Route path="/user/dashboard" element={<UserDashboard/>}/>
             <Route path="/admin/dashboard" element={<Dashboard/>}/>
+
+            //Tasks
+            <Route path="/admin/create-task" element={<CreateTask/>}/>
           </Routes>
         </Router>
       </div>
+
+      <Toaster
+        toastOptions={{
+          className: "",
+          style: {
+            fontSize: "13px",
+          }
+        }}/>
     </UserProvider>
   );
 };
