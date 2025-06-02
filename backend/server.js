@@ -32,10 +32,18 @@ app.use("/api/users", userRoutes)
 app.use("/api/tasks", taskRoutes)
 app.use("/api/reports", reportRoutes)
 
+
 //Serve uploads folder
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+
+if(process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "../frontend/task-manager/dist")));
+  app.get('/{*splat}', (req, res) => {
+    res.sendFile(path.resolve(__dirname, "../frontend/task-manager/dist/index.html"));
+  })
+}
 
 //Server
 const PORT = process.env.PORT || 5000;
